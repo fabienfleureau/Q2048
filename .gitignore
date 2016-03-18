@@ -34,8 +34,8 @@
 
 # IntelliJ
 /out/
-*.iml
-.idea
+Q2048.iml
+.idea/
 
 # mpeltonen/sbt-idea plugin
 .idea_modules/

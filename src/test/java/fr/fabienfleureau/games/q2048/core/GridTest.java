@@ -2,7 +2,7 @@ package fr.fabienfleureau.games.q2048.core;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 
 public class GridTest {
@@ -94,4 +94,46 @@ public class GridTest {
         assertEquals(4, grid.getTile(2, 0).getValue());
     }
 
+
+    @Test
+    public void emptyGridHasAvailableMoves() throws Exception {
+        Grid grid = new GridBuilder().initGrid().build();
+        System.out.println(grid);
+        assertTrue(grid.hasAvailableMoves());
+    }
+
+    @Test
+    public void fullGridhasAvailableMoves() throws Exception {
+        Grid grid = new GridBuilder().initGrid().build();
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                grid.setTile(i, j, i + 1);
+            }
+        }
+        System.out.println(grid);
+        assertTrue(grid.hasAvailableMoves());
+        assertTrue(grid.availableMoves().contains(Direction.LEFT));
+
+        grid = new GridBuilder().initGrid().build();
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                grid.setTile(i, j, j + 1);
+            }
+        }
+        System.out.println(grid);
+        assertTrue(grid.hasAvailableMoves());
+        assertTrue(grid.availableMoves().contains(Direction.UP));
+    }
+
+    @Test
+    public void fullGridHasNoAvailableMoves() throws Exception {
+        Grid grid = new GridBuilder().initGrid().build();
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                grid.setTile(i, j, 1 + j + (i*4));
+            }
+        }
+        System.out.println(grid);
+        assertFalse(grid.hasAvailableMoves());
+    }
 }

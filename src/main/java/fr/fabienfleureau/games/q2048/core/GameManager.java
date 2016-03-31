@@ -19,7 +19,7 @@ public class GameManager {
     }
 
     public void play() {
-        while (!isFinish()) {
+        while (!isOver()) {
             print();
             grid.moveTiles(player.getMove());
             grid.addTileRandom();
@@ -32,8 +32,8 @@ public class GameManager {
         }
     }
 
-    private boolean isFinish() {
-        return false;
+    private boolean isOver() {
+        return !grid.hasAvailableMoves();
     }
 
 

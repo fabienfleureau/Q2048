@@ -32,7 +32,7 @@ public class Grid {
     }
 
     public List<Tile> getEmptyTiles() {
-        return grid.values().stream()
+        return grid.values().parallelStream()
                 .filter(Tile::isEmpty)
                 .collect(Collectors.toList());
     }
@@ -96,7 +96,7 @@ public class Grid {
     }
 
     private void move(Collection<List<Tile>> tilesList, Direction direction) {
-        tilesList.stream().forEach(tiles -> move(tiles, direction));
+        tilesList.parallelStream().forEach(tiles -> move(tiles, direction));
     }
 
 
@@ -130,8 +130,31 @@ public class Grid {
     }
 
 
-    public boolean isFinish() {
-        return false;
+    public boolean hasAvailableMoves() {
+        return !availableMoves().isEmpty();
+    }
+
+    public Collection<Direction> availableMoves() {
+        if (getTiles().parallelStream().anyMatch(Tile::isEmpty)) {
+            return Arrays.asList(Direction.UP, Direction.DOWN, Direction.LEFT, Direction.RIGHT);
+        }
+        boolean leftRight = grid.rowMap().values().parallelStream()
+                .anyMatch(tiles -> tiles.values().parallelStream()
+                        .anyMatch(tile -> tile.getNeighbor(Direction.RIGHT).isPresent()
+                                && tile.getValue() == tile.getNeighbor(Direction.RIGHT).get().getValue()));
+
+        boolean upDown = grid.columnMap().values().parallelStream()
+                .anyMatch(tiles -> tiles.values().parallelStream()
+                        .anyMatch(tile -> tile.getNeighbor(Direction.UP).isPresent()
+                                && tile.getValue() == tile.getNeighbor(Direction.UP).get().getValue()));
+        if (leftRight && upDown) {
+            return Arrays.asList(Direction.UP, Direction.DOWN, Direction.LEFT, Direction.RIGHT);
+        } else if (leftRight) {
+            return Arrays.asList(Direction.LEFT, Direction.RIGHT);
+        } else if (upDown) {
+            return Arrays.asList(Direction.UP, Direction.DOWN);
+        }
+        return Collections.emptyList();
     }
 
 

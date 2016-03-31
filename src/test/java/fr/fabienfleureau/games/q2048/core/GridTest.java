@@ -56,7 +56,7 @@ public class GridTest {
     }
 
     @Test
-         public void moveLeftThreeTiles() throws Exception {
+    public void moveLeftThreeTiles() throws Exception {
         Grid grid = new GridBuilder().initGrid().build();
         grid.setTile(0, 0, 4);
         grid.setTile(0, 2, 4);

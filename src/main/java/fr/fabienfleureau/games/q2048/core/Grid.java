@@ -130,5 +130,9 @@ public class Grid {
     }
 
 
+    public boolean isFinish() {
+        return false;
+    }
+
 
 }

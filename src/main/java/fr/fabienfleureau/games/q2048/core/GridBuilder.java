@@ -72,4 +72,8 @@ public class GridBuilder {
                 }
         );
     }
+
+    public static Grid defaultBuild() {
+        return new GridBuilder().initGrid().setStartTilesNumber(2).build();
+    }
 }

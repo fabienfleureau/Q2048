@@ -2,8 +2,9 @@ package fr.fabienfleureau.games.q2048.core;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import java.util.Optional;
+
+import static org.junit.Assert.*;
 
 
 public class GridBuilderTest {
@@ -31,5 +32,47 @@ public class GridBuilderTest {
         grid = new GridBuilder().initGrid().setStartTilesNumber(16).printAndBuild();
         assertEquals(16, grid.getTiles().stream().count());
         assertEquals(0, grid.getEmptyTiles().stream().count());
+    }
+
+    @Test
+    public void neighborsTraversal() {
+        Grid grid = new GridBuilder().initGrid().printAndBuild();
+        Tile tile = grid.getTile(0, 0);
+        Optional<Tile> neighbor = tile.getNeighbor(Direction.RIGHT);
+        assertTrue(neighbor.isPresent());
+        neighbor = neighbor.get().getNeighbor(Direction.RIGHT);
+        assertTrue(neighbor.isPresent());
+        neighbor = neighbor.get().getNeighbor(Direction.RIGHT);
+        assertTrue(neighbor.isPresent());
+        assertFalse(neighbor.get().getNeighbor(Direction.RIGHT).isPresent());
+
+        neighbor = neighbor.get().getNeighbor(Direction.DOWN);
+        assertTrue(neighbor.isPresent());
+        neighbor = neighbor.get().getNeighbor(Direction.DOWN);
+        assertTrue(neighbor.isPresent());
+        neighbor = neighbor.get().getNeighbor(Direction.DOWN);
+        assertTrue(neighbor.isPresent());
+        assertFalse(neighbor.get().getNeighbor(Direction.DOWN).isPresent());
+
+
+        neighbor = neighbor.get().getNeighbor(Direction.LEFT);
+        assertTrue(neighbor.isPresent());
+        neighbor = neighbor.get().getNeighbor(Direction.LEFT);
+        assertTrue(neighbor.isPresent());
+        neighbor = neighbor.get().getNeighbor(Direction.LEFT);
+        assertTrue(neighbor.isPresent());
+        assertFalse(neighbor.get().getNeighbor(Direction.LEFT).isPresent());
+
+        neighbor = neighbor.get().getNeighbor(Direction.UP);
+        assertTrue(neighbor.isPresent());
+        neighbor = neighbor.get().getNeighbor(Direction.UP);
+        assertTrue(neighbor.isPresent());
+        neighbor = neighbor.get().getNeighbor(Direction.UP);
+        assertTrue(neighbor.isPresent());
+        assertFalse(neighbor.get().getNeighbor(Direction.UP).isPresent());
+
+        assertEquals(tile, neighbor.get());
+
+
     }
 }

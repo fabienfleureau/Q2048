@@ -21,7 +21,8 @@ public class GridBuilder {
                 .forEach(
                         row -> grid.columnKeySet()
                                 .forEach(
-                                        column -> grid.put(row, column, new Tile())));
+                                        column -> grid.put(row, column, new Tile(row, column))));
+        setNeighbors();
         return this;
     }
 
@@ -43,5 +44,32 @@ public class GridBuilder {
         Grid grid = build();
         System.out.println(grid);
         return grid;
+    }
+
+    private void setNeighbors() {
+        grid.rowMap().forEach(
+                (idx, row) -> {
+                    Tile prevTile = null;
+                    for (Tile tile : row.values()) {
+                        if (prevTile != null) {
+                            prevTile.setNeighbor(Direction.RIGHT, tile);
+                            tile.setNeighbor(Direction.LEFT, prevTile);
+                        }
+                        prevTile = tile;
+                    }
+                }
+        );
+        grid.columnMap().forEach(
+                (idx, column) -> {
+                    Tile prevTile = null;
+                    for (Tile tile : column.values()) {
+                        if (prevTile != null) {
+                            prevTile.setNeighbor(Direction.DOWN, tile);
+                            tile.setNeighbor(Direction.UP, prevTile);
+                        }
+                        prevTile = tile;
+                    }
+                }
+        );
     }
 }
